@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 class CampaignRequest(BaseModel):
-    product: str 
+    product: str = Field(min_length=1)
     audience: str
     goal: str 
     platform: str
