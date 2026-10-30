@@ -4,6 +4,7 @@ from prompts import SYSTEM_PROMPT
 import os
 from dotenv import load_dotenv
 from google import genai
+from google.genai import errors
 
 load_dotenv()
 api_key = os.getenv("GEMINI_API_KEY")
@@ -49,6 +50,8 @@ def generate_campaign(response : CampaignRequest)->CampaignContent:
 def create_campaign(request: CampaignRequest):
     try:
         return generate_campaign(request)
+    except errors.APIError:
+        raise HTTPException(status_code=502, detail="Gemini API error. Please try again later.")
     except ValueError as error:
         raise HTTPException(status_code=502, detail=str(error))
 
